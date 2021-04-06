@@ -1,0 +1,25 @@
+Player can move left and right.
+
+Player can jump or double jump.
+
+Level will make player use skill and movement to get to end.
+
+Player will have choice to find health, weapons, and abilities in hidden areas.
+
+Weapons and abilities found by the player wil do more damage.
+
+The game will have three different type of enemies.
+
+Each enemy will have different health and attacks.
+
+Player will face a final boss that tests all mechanics to win.
+
+Players can attack enemies with weapons or abilities.
+
+Enemies will attack players and do damage if successful.
+
+Players will be sent back to start if they die.
+
+Levels will have hidden areas that contaon rewards for players.
+
+Enemies swill have set damage amount they can do to players.
