@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player_controller : MonoBehaviour
+public class Player : Character
 {
     [SerializeField] private Rigidbody2D myrb;
-    public Animator myPlayer;
+   
     public Transform playerPos;
-    private SpriteRenderer myRend;
-    public float jumpHeight = 50f;
-    public float speed = 5f;
+    public float jumpHeight = 10f;
+    private BoxCollider2D box2D;
     private bool DoubleJump = false;
-    private bool onGround;
+    public LayerMask platformLayer;
+    
 
     public Transform fireballSpot;
     public GameObject fireball;
@@ -19,7 +19,7 @@ public class player_controller : MonoBehaviour
 
     public int health = 100;
     public int player_hp;
-    public Health_UI HP;
+   
 
     public GameObject fb_pf;
     public GameObject inventory;
@@ -35,76 +35,94 @@ public class player_controller : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemy_layer;
 
-    public bool lookingRight;
+    
     
 
 
     // Start is called before the first frame update
-    void Start()
+   public override void Start()
     {
         myrb = this.GetComponent<Rigidbody2D>();
-        myPlayer = this.GetComponent<Animator>();
-        myRend = this.GetComponent<SpriteRenderer>();
+        box2D = this.GetComponent<BoxCollider2D>();
+        base.Start();
+     
         player_hp = health;
-        HP.maxHP(health);
-        
+
+        Health.maxHP(health);
+
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         float run = Input.GetAxisRaw("Horizontal");
         Movement();
         UseHealthItem();
-        myPlayer.SetFloat("speed", Mathf.Abs(run));
-    
+        myAnim.SetFloat("speed", Mathf.Abs(run));
+        myAnim.SetFloat("vSpeed", myrb.velocity.y);
        
-       
-        if(player_hp <= 0)
-        {
-            Respawn();
-        }
 
-        if (run < 0 && !lookingRight )
+        if (run < 0 && !lookingRight)
         {
 
-          
-           // myPlayer.SetInteger("Dir", 2);
 
-            //myRend.flipX = true;
             FlipCharacter();
-           
-
-
 
         }
         else if (run > 0 && lookingRight)
         {
 
-            
-           // myPlayer.SetInteger("Dir", 2);
-            
-           // myRend.flipX = false;
             FlipCharacter();
 
 
+        }
+
+
+
+        if (Input.GetAxisRaw("Jump") > 0 && OnGround())
+
+        {
+
+            myrb.velocity = Vector2.up * jumpHeight;
+            DoubleJump = true;
 
 
         }
-        else if (Input.GetAxisRaw("Fire1") > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && DoubleJump && !OnGround())
+        {
+
+            myrb.velocity = Vector2.up * jumpHeight;
+            DoubleJump = false;
+
+        }
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        myAnim.SetBool("Jumping", OnGround());
+
+
+        if (player_hp <= 0)
+        {
+            Respawn();
+        }
+
+
+
+         if (Input.GetMouseButtonDown(0))
         {
 
             swordAttack();
-            myPlayer.SetBool("attack",false);
+            myrb.velocity = Vector2.zero;
+            
 
         }
         
 
         if (Input.GetKeyDown(KeyCode.F) && canUseFireball)
         {
-            myPlayer.SetInteger("Dir", 4);
+            myAnim.SetTrigger("Fireball");
             GameObject fire = Instantiate(fireball, fireballSpot.position, fireballSpot.rotation);
            
             destroyFireball(fb);
@@ -114,40 +132,20 @@ public class player_controller : MonoBehaviour
 
         }
 
-        else if(Input.GetAxisRaw("Fire2") > 0 && canUseSword)
+        else if(Input.GetMouseButton(1) && canUseSword)
         {
             heavyAttack();
             destroySword(sword);
             canUseSword = false;
         }
 
-        if (Input.GetAxisRaw("Jump") > 0 && onGround)
-
-        {
-            myPlayer.SetInteger("Dir", 0);
-            myrb.velocity = new Vector2(run*speed, jumpHeight);
-            DoubleJump = true;
-            onGround = false;
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Space) && DoubleJump)
-        {
-            myrb.velocity = new Vector2(run*speed, jumpHeight);
-            DoubleJump = false;
-            
-        }
-        
        
         
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "ground")
-        {
-            onGround = true;
-
-        }
-        else if(collision.gameObject.tag == "enemy")
+       
+         if(collision.gameObject.tag == "enemy")
         {
             TakeDamge(20);
            
@@ -178,7 +176,7 @@ public class player_controller : MonoBehaviour
     {
         if(collision.gameObject.tag == "enemy" || collision.gameObject.tag == "heavy")
         {
-            myPlayer.SetBool("TakingDamage", false);
+            myAnim.SetBool("TakingDamage", false);
         }
     }
     
@@ -186,15 +184,24 @@ public class player_controller : MonoBehaviour
     {
         float run = Input.GetAxisRaw("Horizontal");
 
-        myrb.velocity = new Vector2(run * speed, myrb.velocity.y);
+        myrb.velocity = new Vector2(run ,0)*speed + new Vector2(0,myrb.velocity.y);
       
+    }
+    
+
+    public bool OnGround()
+    {
+        float extraH = 0.4f;
+        RaycastHit2D hitinfo = Physics2D.BoxCast(box2D.bounds.center, box2D.bounds.size, 0f, Vector2.down, extraH, platformLayer);
+        return hitinfo.collider != null;
+        
     }
     
     public void TakeDamge(int damage)
     {
         player_hp -= damage;
-        HP.setHP(player_hp);
-        myPlayer.SetBool("TakingDamage", true);
+        Health.setHP(player_hp);
+        myAnim.SetBool("TakingDamage", true);
         
     }
     public void UseHealthItem()
@@ -203,7 +210,7 @@ public class player_controller : MonoBehaviour
         {
             destroyHpItem(hpItem);
             player_hp += 45;
-            HP.setHP(player_hp);
+            Health.setHP(player_hp);
             canUseHP = false;
         }
     }
@@ -211,8 +218,10 @@ public class player_controller : MonoBehaviour
     {
         
             playerPos.position = new Vector3(-10.23f, -4.26f, 0);
+            myrb.velocity = Vector2.zero;
+            FlipCharacter();
             player_hp = health;
-            HP.setHP(health);
+            Health.setHP(health);
 
       
     }
@@ -257,32 +266,27 @@ public class player_controller : MonoBehaviour
     }
     public void swordAttack()
     {
-        myPlayer.SetInteger("Dir", 1);
+        myAnim.SetTrigger("Attack");
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
         foreach(Collider2D enemy in enemies)
-        {
-            Debug.Log("hit");
-            enemy.GetComponent<enemy>().TakeDamage(5);
-            
-        }
-    }
-    public void heavyAttack()
-    {
-        myPlayer.SetInteger("Dir", 5);
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
-        foreach (Collider2D enemy in enemies)
         {
             Debug.Log("hit");
             enemy.GetComponent<enemy>().TakeDamage(50);
             
         }
     }
-    public void FlipCharacter()
+    public void heavyAttack()
     {
-        lookingRight = !lookingRight;
-
-        transform.Rotate(0f, 180f, 0f);
+        myAnim.SetTrigger("HeavyAttack");
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
+        foreach (Collider2D enemy in enemies)
+        {
+            Debug.Log("hit");
+            enemy.GetComponent<enemy>().TakeDamage(100);
+            
+        }
     }
+   
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(attackArea.position, attackRange);
