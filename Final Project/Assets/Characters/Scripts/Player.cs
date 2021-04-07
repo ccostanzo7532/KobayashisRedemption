@@ -6,8 +6,10 @@ public class Player : Character
 {
     [SerializeField] private Rigidbody2D myrb;
    
-    public Transform playerPos;
+    public Transform playerStartPos;
+
     public float jumpHeight = 10f;
+    new float speed = 3.5f;
     private BoxCollider2D box2D;
     private bool DoubleJump = false;
     public LayerMask platformLayer;
@@ -216,12 +218,16 @@ public class Player : Character
     }
     public void Respawn()
     {
-        
-            playerPos.position = new Vector3(-10.23f, -4.26f, 0);
-            myrb.velocity = Vector2.zero;
+
+        this.transform.position = playerStartPos.position;
+        myrb.velocity = Vector2.zero;
+        if (!lookingRight)
+        {
             FlipCharacter();
-            player_hp = health;
-            Health.setHP(health);
+        }
+        
+        player_hp = health;
+        Health.setHP(health);
 
       
     }
@@ -271,7 +277,7 @@ public class Player : Character
         foreach(Collider2D enemy in enemies)
         {
             Debug.Log("hit");
-            enemy.GetComponent<enemy>().TakeDamage(50);
+            enemy.GetComponent<Enemy>().TakeDamage(50);
             
         }
     }
@@ -282,7 +288,7 @@ public class Player : Character
         foreach (Collider2D enemy in enemies)
         {
             Debug.Log("hit");
-            enemy.GetComponent<enemy>().TakeDamage(100);
+            enemy.GetComponent<Enemy>().TakeDamage(100);
             
         }
     }

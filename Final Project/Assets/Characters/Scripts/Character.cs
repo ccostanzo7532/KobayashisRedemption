@@ -8,7 +8,7 @@ public abstract class Character : MonoBehaviour
     public Health_UI Health;
     protected Animator myAnim;
 
-    protected float speed = 3.5f;
+    protected float speed;
     protected bool lookingRight;
     // Start is called before the first frame update
     public virtual void Start()

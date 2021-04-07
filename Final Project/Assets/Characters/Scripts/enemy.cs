@@ -2,65 +2,80 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemy : MonoBehaviour
+public class Enemy : Character
 {
+    private Rigidbody2D erb;
+    private bool movingR;
     public int enemyHealth = 100;
-    SpriteRenderer enemySprite;
     public int enemy_hp;
-    public Health_UI HP;
-    public List<Transform> dots;
+    new float speed = 2f;
+    Vector2 movement;
+
+
+    public Transform startPos;
+    public Transform endPos;
     public Transform Player;
-    public int point = 0;
-    int pointValue = 1;
-    public float speed = 1f;
+   
     public float playerRange = 0.5f;
 
     // Start is called before the first frame update
-    void Start()
+    public override void  Start()
     {
-        enemySprite = GetComponent<SpriteRenderer>();
+        erb = this.GetComponent<Rigidbody2D>();
         enemy_hp = enemyHealth;
-        HP.maxHP(enemyHealth);
+        Health.maxHP(enemyHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
-        GoToNext();
 
-       
+
+        Debug.Log(erb.velocity);
        
     }
-    
-    public void GoToNext()
+    private void FixedUpdate()
     {
-        Transform goal = dots[point];
-        if (goal.transform.position.x > transform.position.x)
+        
+        Movement();
+        
+    }
+
+    public void Movement()
+    {
+        
+        
+        if ( movingR )
         {
-            //enemySprite.flipX = false;
-            transform.localScale = new Vector3(-0.33f, 0.36f, 0);
+            erb.velocity += new Vector2(speed,erb.velocity.y);
+            //FlipCharacter();
+            
         }
-        else
+        else if ( !movingR )
         {
-            //enemySprite.flipX = true;
-            transform.localScale = new Vector3(0.33f, 0.36f, 0);
+            erb.velocity -= new Vector2(speed,erb.velocity.y);
+            //FlipCharacter();
+           
         }
 
-        transform.position = Vector2.MoveTowards(transform.position,goal.position,speed* Time.deltaTime);
-
-        if(Vector2.Distance(transform.position,goal.position) < 0.2f)
+        if(erb.position.x >= endPos.position.x && lookingRight)
         {
-            if(point == dots.Count - 1)
-            {
-                pointValue = -1;
-            }
-
-            if(point == 0)
-            {
-                pointValue = 1;
-            }
-            point += pointValue;
+            movingR = false;
+            
+            FlipCharacter();
         }
+        else if(erb.position.x <= startPos.position.x && !lookingRight)
+        {
+            movingR = true;
+            
+            FlipCharacter();
+        }
+
+        if(erb.velocity.magnitude > speed)
+        {
+            erb.velocity = erb.velocity.normalized * speed;
+        }
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -73,7 +88,7 @@ public class enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         enemy_hp -= damage;
-        HP.setHP(enemy_hp);
+        Health.setHP(enemy_hp);
         if (enemy_hp <= 0)
         {
             Die();
@@ -86,7 +101,7 @@ public class enemy : MonoBehaviour
     }
     void Die()
     {
-        Debug.Log("enemy died");
+        
         Destroy(gameObject);
     }
 
