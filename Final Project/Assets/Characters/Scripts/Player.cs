@@ -59,8 +59,8 @@ public class Player : Character
         float run = Input.GetAxisRaw("Horizontal");
         Movement();
         UseHealthItem();
-        myAnim.SetFloat("speed", Mathf.Abs(run));
-        myAnim.SetFloat("vSpeed", myrb.velocity.y);
+        MyAnim.SetFloat("speed", Mathf.Abs(run));
+        MyAnim.SetFloat("vSpeed", myrb.velocity.y);
        
 
         if (run < 0 && !lookingRight)
@@ -102,7 +102,7 @@ public class Player : Character
     // Update is called once per frame
     void Update()
     {
-        myAnim.SetBool("Jumping", OnGround());
+        MyAnim.SetBool("Jumping", OnGround());
 
 
         if (player_hp <= 0)
@@ -124,7 +124,7 @@ public class Player : Character
 
         if (Input.GetKeyDown(KeyCode.F) && canUseFireball)
         {
-            myAnim.SetTrigger("Fireball");
+            MyAnim.SetTrigger("Fireball");
             GameObject fire = Instantiate(fireball, fireballSpot.position, fireballSpot.rotation);
            
             destroyFireball(fb);
@@ -178,7 +178,7 @@ public class Player : Character
     {
         if(collision.gameObject.tag == "enemy" || collision.gameObject.tag == "heavy")
         {
-            myAnim.SetBool("TakingDamage", false);
+            MyAnim.SetBool("TakingDamage", false);
         }
     }
     
@@ -203,7 +203,7 @@ public class Player : Character
     {
         player_hp -= damage;
         Health.setHP(player_hp);
-        myAnim.SetBool("TakingDamage", true);
+        MyAnim.SetBool("TakingDamage", true);
         
     }
     public void UseHealthItem()
@@ -272,7 +272,7 @@ public class Player : Character
     }
     public void swordAttack()
     {
-        myAnim.SetTrigger("Attack");
+        MyAnim.SetTrigger("Attack");
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
         foreach(Collider2D enemy in enemies)
         {
@@ -283,7 +283,7 @@ public class Player : Character
     }
     public void heavyAttack()
     {
-        myAnim.SetTrigger("HeavyAttack");
+        MyAnim.SetTrigger("HeavyAttack");
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
         foreach (Collider2D enemy in enemies)
         {

@@ -22,6 +22,8 @@ public class Enemy : Character
     // Start is called before the first frame update
     public override void  Start()
     {
+        base.Start();
+        ChangeEnemyState(new IdleState());
         erb = this.GetComponent<Rigidbody2D>();
         enemy_hp = enemyHealth;
         Health.maxHP(enemyHealth);
@@ -31,31 +33,42 @@ public class Enemy : Character
     void Update()
     {
 
-
-        Debug.Log(erb.velocity);
+        currentState.Execute();
+       
        
     }
     private void FixedUpdate()
     {
-        myAnim.SetFloat("speed", Mathf.Abs(speed));
-        Movement();
+       
+       
         
+    }
+
+    public void ChangeEnemyState(IEnemyState newState)
+    {
+        if (currentState != null)
+        {
+            currentState.Exit();
+        }
+        currentState = newState;
+
+        currentState.Enter(this);
     }
 
     public void Movement()
     {
-        
+        MyAnim.SetFloat("speed", Mathf.Abs(speed));
         
         if ( movingR )
         {
             erb.velocity += new Vector2(speed,erb.velocity.y);
-            //FlipCharacter();
+            
             
         }
         else if ( !movingR )
         {
             erb.velocity -= new Vector2(speed,erb.velocity.y);
-            //FlipCharacter();
+           
            
         }
 
@@ -78,6 +91,8 @@ public class Enemy : Character
         }
 
     }
+
+   
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "projectile")

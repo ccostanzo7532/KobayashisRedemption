@@ -6,14 +6,15 @@ public abstract class Character : MonoBehaviour
 
 {
     public Health_UI Health;
-    protected Animator myAnim;
+    
+    public Animator MyAnim{ get; private set; }
 
     protected float speed;
     protected bool lookingRight;
     // Start is called before the first frame update
     public virtual void Start()
     {
-        myAnim = this.GetComponent<Animator>();
+        MyAnim = this.GetComponent<Animator>();
         
     }
 
