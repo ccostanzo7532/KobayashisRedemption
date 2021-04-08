@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+    private IEnemyState currentState;
     private Rigidbody2D erb;
     private bool movingR;
     public int enemyHealth = 100;
@@ -36,7 +37,7 @@ public class Enemy : Character
     }
     private void FixedUpdate()
     {
-        
+        myAnim.SetFloat("speed", Mathf.Abs(speed));
         Movement();
         
     }
