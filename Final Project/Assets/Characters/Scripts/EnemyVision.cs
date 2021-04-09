@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyVision : MonoBehaviour
 {
-    [SerializeField] private Enemy enemy;
+    public Enemy enemy;
 
     
 

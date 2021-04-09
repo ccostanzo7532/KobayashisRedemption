@@ -11,7 +11,7 @@ public class Enemy : Character
     public int enemyHealth = 100;
     public int enemy_hp;
     new float speed = 2f;
-   [SerializeField] private float AttackRange;
+    [SerializeField] private float AttackRange = 1f;
     public bool InAttackRange
     {
         get
@@ -46,7 +46,7 @@ public class Enemy : Character
     {
 
         currentState.Execute();
-        //LookAtPlayer();
+        LookAtPlayer();
        
        
     }
@@ -69,6 +69,7 @@ public class Enemy : Character
         {
             MyAnim.SetFloat("speed", Mathf.Abs(speed));
 
+            Debug.Log("moving");
 
 
             if (movingR)
@@ -112,12 +113,18 @@ public class Enemy : Character
     private void LookAtPlayer()
     {
        
-        if(Target != null)
+        if(Target != null) 
         {
             float xDir = Target.transform.position.x - transform.position.x;
 
-            if(xDir < 0 && lookingRight || xDir > 0 && !lookingRight)
+            if(xDir < 0 && lookingRight)
             {
+                movingR = false;
+                FlipCharacter();
+            }
+            else if(xDir > 0 && !lookingRight)
+            {
+                movingR = true;
                 FlipCharacter();
             }
         }
