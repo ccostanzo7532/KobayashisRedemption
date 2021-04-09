@@ -11,7 +11,7 @@ public class Player : Character
     public float jumpHeight = 10f;
     new float speed = 3.5f;
     private BoxCollider2D box2D;
-    private bool DoubleJump = false;
+    private bool DoubleJump;
     public LayerMask platformLayer;
     
 
@@ -58,7 +58,7 @@ public class Player : Character
     {
         float run = Input.GetAxisRaw("Horizontal");
         Movement();
-        UseHealthItem();
+      
         MyAnim.SetFloat("speed", Mathf.Abs(run));
         MyAnim.SetFloat("vSpeed", myrb.velocity.y);
        
@@ -83,25 +83,18 @@ public class Player : Character
         if (Input.GetAxisRaw("Jump") > 0 && OnGround())
 
         {
-
             myrb.velocity = Vector2.up * jumpHeight;
             DoubleJump = true;
-
-
+           
         }
-        if (Input.GetKeyDown(KeyCode.Space) && DoubleJump && !OnGround())
-        {
-
-            myrb.velocity = Vector2.up * jumpHeight;
-            DoubleJump = false;
-
-        }
+        
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        UseHealthItem();
         MyAnim.SetBool("Jumping", OnGround());
 
 
@@ -110,15 +103,19 @@ public class Player : Character
             Respawn();
         }
 
+        if (Input.GetAxisRaw("Jump") > 0 && DoubleJump && !OnGround())
+        {
 
+            myrb.velocity = Vector2.up * jumpHeight;
+            DoubleJump = false;
 
-         if (Input.GetMouseButtonDown(0))
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
 
             swordAttack();
-            myrb.velocity = Vector2.zero;
-            
-
+           
         }
         
 

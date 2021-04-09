@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class IgnoreCollisions : MonoBehaviour
 {
-    [SerializeField] private Collider2D other;
+    [SerializeField]
+    private Collider2D other;
 
     private void Awake()
     {

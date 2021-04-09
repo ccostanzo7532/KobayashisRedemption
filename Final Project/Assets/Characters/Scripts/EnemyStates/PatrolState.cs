@@ -17,6 +17,11 @@ public class PatrolState : IEnemyState
     {
         Patroling();
         enemy.Movement();
+
+        if(enemy.Target !=  null && enemy.InAttackRange)
+        {
+            enemy.ChangeEnemyState(new AttackState());
+        }
     }
 
     public void Exit()
@@ -31,7 +36,6 @@ public class PatrolState : IEnemyState
     private void Patroling()
     {
        
-
         patrolTimer += Time.deltaTime;
 
         if (patrolTimer >= patrolDur)

@@ -11,6 +11,8 @@ public abstract class Character : MonoBehaviour
 
     protected float speed;
     protected bool lookingRight;
+
+    public bool Attacking { get; set; }
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -18,11 +20,7 @@ public abstract class Character : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     public void FlipCharacter()
     {
         lookingRight = !lookingRight;
