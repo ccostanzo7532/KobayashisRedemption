@@ -14,6 +14,10 @@ TagManager:
   - Ground
   - heavy
   - Point
+  - player_Sword
+  - player_SpecialSword
+  - enemy1_Sword
+  - enemy2_Sword
   layers:
   - Default
   - TransparentFX

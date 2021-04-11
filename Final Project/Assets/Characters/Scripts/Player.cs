@@ -2,12 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void PlayerDeadEvent();
 public class Player : Character
 {
-    [SerializeField] private Rigidbody2D myrb;
    
-    public Transform playerStartPos;
+    public event PlayerDeadEvent Died;
 
+    private static Player instance;
+
+    public  static Player Instance
+    {
+        get
+        {
+            if(instance == null)
+            {
+                instance = GameObject.FindObjectOfType<Player>();
+            }
+            return instance;
+        }
+    }
+
+    [SerializeField] private Rigidbody2D myrb;
+  
+    public Transform playerStartPos;
+    public SpriteRenderer myRend;
     public float jumpHeight = 10f;
     new float speed = 3.5f;
     private BoxCollider2D box2D;
@@ -19,8 +37,12 @@ public class Player : Character
     public GameObject fireball;
     bool canUseFireball;
 
-    public int health = 100;
+    new int health = 100;
     public int player_hp;
+    private bool invincible = false;
+    [SerializeField]
+    private float invincibleTimer = 3;
+    
    
 
     public GameObject fb_pf;
@@ -33,21 +55,32 @@ public class Player : Character
     public GameObject hpItem_pf;
     bool canUseHP;
 
-    public Transform attackArea;
-    public float attackRange = 0.5f;
-    public LayerMask enemy_layer;
+   
 
-    
-    
+    public override bool isDead
+    {
+        get
+        {
+            if(health <= 0)
+            {
+                WhenDead();
+            }
+           
+            return health <= 0;
+        }
+    }
+
+
+
 
 
     // Start is called before the first frame update
-   public override void Start()
+    public override void Start()
     {
         myrb = this.GetComponent<Rigidbody2D>();
         box2D = this.GetComponent<BoxCollider2D>();
         base.Start();
-     
+        myRend = this.GetComponent<SpriteRenderer>();
         player_hp = health;
 
         Health.maxHP(health);
@@ -56,37 +89,48 @@ public class Player : Character
 
     private void FixedUpdate()
     {
-        float run = Input.GetAxisRaw("Horizontal");
-        Movement();
-      
-        MyAnim.SetFloat("speed", Mathf.Abs(run));
-        MyAnim.SetFloat("vSpeed", myrb.velocity.y);
-       
+        
 
-        if (run < 0 && !lookingRight)
+        if (!Damaged && !isDead)
         {
+            float run = Input.GetAxisRaw("Horizontal");
+            Movement();
+
+            MyAnim.SetFloat("speed", Mathf.Abs(run));
+            MyAnim.SetFloat("vSpeed", myrb.velocity.y);
+            if (run < 0 && !lookingRight)
+            {
 
 
-            FlipCharacter();
+                FlipCharacter();
 
+            }
+            else if (run > 0 && lookingRight)
+            {
+
+                FlipCharacter();
+
+
+            }
+
+
+
+            if (Input.GetAxisRaw("Jump") > 0 && OnGround())
+
+            {
+                myrb.velocity = Vector2.up * jumpHeight;
+                DoubleJump = true;
+
+            }
+           else if (Input.GetAxisRaw("Jump") > 0 && DoubleJump && !OnGround())
+            {
+
+                myrb.velocity = Vector2.up * jumpHeight;
+                DoubleJump = false;
+
+            }
         }
-        else if (run > 0 && lookingRight)
-        {
-
-            FlipCharacter();
-
-
-        }
-
-
-
-        if (Input.GetAxisRaw("Jump") > 0 && OnGround())
-
-        {
-            myrb.velocity = Vector2.up * jumpHeight;
-            DoubleJump = true;
-           
-        }
+        
         
 
     }
@@ -94,52 +138,66 @@ public class Player : Character
     // Update is called once per frame
     void Update()
     {
-        UseHealthItem();
-        MyAnim.SetBool("Jumping", OnGround());
-
-
-        if (player_hp <= 0)
+        if (!Damaged && !isDead)
         {
-            Respawn();
+            UseHealthItem();
+            MyAnim.SetBool("Jumping", OnGround());
+
+
+
+
+            if (Input.GetAxisRaw("Jump") > 0 && DoubleJump && !OnGround())
+            {
+
+                myrb.velocity = Vector2.up * jumpHeight;
+                DoubleJump = false;
+
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+
+                swordAttack();
+
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.F) && canUseFireball)
+            {
+                MyAnim.SetTrigger("Fireball");
+                GameObject fire = Instantiate(fireball, fireballSpot.position, fireballSpot.rotation);
+
+                destroyFireball(fb);
+                canUseFireball = false;
+
+
+
+            }
+
+            else if (Input.GetMouseButton(1) && canUseSword)
+            {
+                heavyAttack();
+                destroySword(sword);
+                canUseSword = false;
+            }
+
         }
 
-        if (Input.GetAxisRaw("Jump") > 0 && DoubleJump && !OnGround())
+
+
+    }
+
+    public void WhenDead()
+    {
+        if(Died != null)
         {
-
-            myrb.velocity = Vector2.up * jumpHeight;
-            DoubleJump = false;
-
+            Died();
         }
+    }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-
-            swordAttack();
-           
-        }
-        
-
-        if (Input.GetKeyDown(KeyCode.F) && canUseFireball)
-        {
-            MyAnim.SetTrigger("Fireball");
-            GameObject fire = Instantiate(fireball, fireballSpot.position, fireballSpot.rotation);
-           
-            destroyFireball(fb);
-            canUseFireball = false;
-
-
-
-        }
-
-        else if(Input.GetMouseButton(1) && canUseSword)
-        {
-            heavyAttack();
-            destroySword(sword);
-            canUseSword = false;
-        }
-
-       
-        
+    public override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -213,21 +271,7 @@ public class Player : Character
             canUseHP = false;
         }
     }
-    public void Respawn()
-    {
 
-        this.transform.position = playerStartPos.position;
-        myrb.velocity = Vector2.zero;
-        if (!lookingRight)
-        {
-            FlipCharacter();
-        }
-        
-        player_hp = health;
-        Health.setHP(health);
-
-      
-    }
     public void addFireball()
     {
         fb = Instantiate(fb_pf);
@@ -270,30 +314,55 @@ public class Player : Character
     public void swordAttack()
     {
         MyAnim.SetTrigger("Attack");
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
-        foreach(Collider2D enemy in enemies)
-        {
-            Debug.Log("hit");
-            enemy.GetComponent<Enemy>().TakeDamage(50);
-            
-        }
+
+        
     }
     public void heavyAttack()
     {
         MyAnim.SetTrigger("HeavyAttack");
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(attackArea.position, attackRange, enemy_layer);
-        foreach (Collider2D enemy in enemies)
-        {
-            Debug.Log("hit");
-            enemy.GetComponent<Enemy>().TakeDamage(100);
-            
-        }
-    }
-   
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(attackArea.position, attackRange);
         
     }
+   
+    private IEnumerator InvincibleFlash()
+    {
+        while (invincible)
+        {
+            myRend.enabled = false;
+            yield return new WaitForSeconds(0.1f);
 
+            myRend.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public override IEnumerator TakeDamage()
+    {
+        if (!invincible)
+        {
+            health -= 25;
+
+            if (!isDead)
+            {
+                MyAnim.SetTrigger("TakeDamage");
+                invincible = true;
+                StartCoroutine(InvincibleFlash());
+                yield return new WaitForSeconds(invincibleTimer);
+                invincible = false;
+            }
+            else
+            {
+                MyAnim.SetTrigger("Die");
+                
+            }
+        }
+       
+    }
+
+    public override void Die()
+    {
+        myrb.velocity = Vector2.zero;
+        MyAnim.SetTrigger("Idle");
+        health = 100;
+        transform.position = playerStartPos.position;
+    }
 }

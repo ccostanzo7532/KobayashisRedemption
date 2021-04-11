@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+   
     private IEnemyState currentState;
     public GameObject Target { get; set; }
     private Rigidbody2D erb;
     private bool movingR;
-    public int enemyHealth = 100;
+   new int health = 100;
     public int enemy_hp;
     new float speed = 2f;
     [SerializeField] private float AttackRange = 1f;
@@ -24,10 +25,17 @@ public class Enemy : Character
         }
     }
 
+    public override bool isDead
+    {
+        get
+        {
+            return health <= 0;
+        }
+    }
 
     public Transform startPos;
     public Transform endPos;
-    public Transform Player;
+    
    
     public float playerRange = 0.5f;
 
@@ -37,16 +45,25 @@ public class Enemy : Character
         base.Start();
         ChangeEnemyState(new IdleState());
         erb = this.GetComponent<Rigidbody2D>();
-        enemy_hp = enemyHealth;
-        Health.maxHP(enemyHealth);
+        enemy_hp = health;
+        Health.maxHP(enemy_hp);
+
+        Player.Instance.Died += new PlayerDeadEvent(StopAttacking);
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        currentState.Execute();
-        LookAtPlayer();
+        if (!isDead)
+        {
+            if (!Damaged)
+            {
+                currentState.Execute();
+            }
+           
+            LookAtPlayer();
+        }
+        
        
        
     }
@@ -69,8 +86,7 @@ public class Enemy : Character
         {
             MyAnim.SetFloat("speed", Mathf.Abs(speed));
 
-            Debug.Log("moving");
-
+          
 
             if (movingR)
             {
@@ -131,10 +147,16 @@ public class Enemy : Character
        
     }
     
-   
-
-    private void OnTriggerEnter2D(Collider2D other)
+   public void StopAttacking()
     {
+        Target = null;
+        ChangeEnemyState(new PatrolState());
+
+    }
+
+    public override void OnTriggerEnter2D(Collider2D other)
+    {
+        base.OnTriggerEnter2D(other);
         currentState.OnTriggerEnter(other);
     }
 
@@ -160,11 +182,31 @@ public class Enemy : Character
     {
         TakeDamage(30);
     }
-    void Die()
+   
+
+    public override IEnumerator TakeDamage()
     {
-        
-        Destroy(gameObject);
+        health -= 50;
+
+
+        if (!isDead)
+        {
+            MyAnim.SetTrigger("Damage");
+            Health.setHP(enemy_hp);
+            Debug.Log("Player hit me");
+
+
+        }
+        else
+        {
+            MyAnim.SetTrigger("Die");
+            Debug.Log("Player killed me");
+            yield return null;
+        }
     }
 
-
+    public override void Die()
+    {
+        Destroy(gameObject);
+    }
 }
