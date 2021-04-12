@@ -23,6 +23,8 @@ public class AttackState : IEnemyState
             enemy.ChangeEnemyState(new PatrolState());
 
         }
+
+       
         
        
     }
@@ -49,6 +51,11 @@ public class AttackState : IEnemyState
         {
             canAttack = false;
             enemy.MyAnim.SetTrigger("Attack");
+        }
+
+        if (enemy.tag == "Enemy_throw")
+        {
+            enemy.ThrowKunai();
         }
     } 
 }

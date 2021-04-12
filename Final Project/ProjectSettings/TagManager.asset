@@ -18,6 +18,8 @@ TagManager:
   - player_SpecialSword
   - enemy1_Sword
   - enemy2_Sword
+  - Kunai
+  - Enemy_throw
   layers:
   - Default
   - TransparentFX

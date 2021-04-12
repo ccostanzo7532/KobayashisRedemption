@@ -571,6 +571,7 @@ GameObject:
   - component: {fileID: 5679192592898656470}
   - component: {fileID: 5679192592898656475}
   - component: {fileID: 5679192592898656468}
+  - component: {fileID: 2823483453180137378}
   - component: {fileID: 5679192592898656469}
   m_Layer: 9
   m_Name: 'Vision '
@@ -607,6 +608,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 5679192591836696494}
 --- !u!114 &5679192592898656468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5679192592898656471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f3b5fc8cbe744ab242ac8595417e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  other: {fileID: 0}
+--- !u!114 &2823483453180137378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

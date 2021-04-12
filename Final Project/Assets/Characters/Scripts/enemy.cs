@@ -9,7 +9,8 @@ public class Enemy : Character
     public GameObject Target { get; set; }
     private Rigidbody2D erb;
     private bool movingR;
-
+    public Transform kunaiSpot;
+    public GameObject kunai_pf;
     public int enemy_hp;
     new float speed = 2f;
     [SerializeField] private float AttackRange = 1f;
@@ -146,7 +147,11 @@ public class Enemy : Character
         }
        
     }
-    
+
+    public void ThrowKunai()
+    {
+        GameObject Kunai = Instantiate(kunai_pf, kunaiSpot.position, kunaiSpot.rotation);
+    }
    public void StopAttacking()
     {
         Target = null;
