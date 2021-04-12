@@ -5,7 +5,7 @@ using UnityEngine;
 public class DisableSword : MonoBehaviour
 {
     [SerializeField]
-    private string CharacterTag;
+    private string CharacterTag = "Player";
 
     private void OnTriggerEnter2D(Collider2D other)
     {

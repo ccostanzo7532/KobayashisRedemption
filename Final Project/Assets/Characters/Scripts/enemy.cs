@@ -9,7 +9,7 @@ public class Enemy : Character
     public GameObject Target { get; set; }
     private Rigidbody2D erb;
     private bool movingR;
-   new int health = 100;
+
     public int enemy_hp;
     new float speed = 2f;
     [SerializeField] private float AttackRange = 1f;
@@ -29,7 +29,7 @@ public class Enemy : Character
     {
         get
         {
-            return health <= 0;
+            return enemy_hp <= 0;
         }
     }
 
@@ -37,7 +37,7 @@ public class Enemy : Character
     public Transform endPos;
     
    
-    public float playerRange = 0.5f;
+    
 
     // Start is called before the first frame update
     public override void  Start()
@@ -47,7 +47,7 @@ public class Enemy : Character
         erb = this.GetComponent<Rigidbody2D>();
         enemy_hp = health;
         Health.maxHP(enemy_hp);
-
+       
         Player.Instance.Died += new PlayerDeadEvent(StopAttacking);
     }
 
@@ -165,42 +165,48 @@ public class Enemy : Character
         if (collision.gameObject.tag == "projectile")
         {
             Destroy(collision.gameObject);
-            fireballDmg();
+           
         }
     }
-    public void TakeDamage(int damage)
-    {
-        enemy_hp -= damage;
-        Health.setHP(enemy_hp);
-        if (enemy_hp <= 0)
-        {
-            Die();
-        }
-
-    }
-    public void fireballDmg()
-    {
-        TakeDamage(30);
-    }
+    
+    
    
 
     public override IEnumerator TakeDamage()
     {
-        health -= 50;
+        if(damageTag.Contains("player_Sword"))
+        {
+            enemy_hp -= 50;
+            damageTag.Remove("player_Sword");
+          
+        }
+       else if (damageTag.Contains("projectile"))
+        {
+            enemy_hp -= 30;
+            damageTag.Remove("projectile");
+            Debug.Log("fire");
+           
+        }
+        else if (damageTag.Contains("player_SpecialSword"))
+        {
+            enemy_hp -= 100;
+            damageTag.Remove("player_SpecialSword");
+        }
+
+        
+        
+        Health.setHP(enemy_hp);
 
 
         if (!isDead)
         {
             MyAnim.SetTrigger("Damage");
-            Health.setHP(enemy_hp);
-            Debug.Log("Player hit me");
-
-
+         
         }
         else
         {
             MyAnim.SetTrigger("Die");
-            Debug.Log("Player killed me");
+           
             yield return null;
         }
     }

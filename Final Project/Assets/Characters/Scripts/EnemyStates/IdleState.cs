@@ -7,15 +7,16 @@ public class IdleState :IEnemyState
     private Enemy enemy;
 
     private float idleTimer;
-    private float idleDur = 5f;
+    private float idleDur;
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
+        idleDur = UnityEngine.Random.Range(1, 10);
     }
 
     public void Execute()
     {
-       
+        
         Idle();
         if(enemy.Target != null)
         {

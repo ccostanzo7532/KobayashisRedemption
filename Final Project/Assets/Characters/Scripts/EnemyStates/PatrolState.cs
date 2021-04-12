@@ -6,15 +6,17 @@ public class PatrolState : IEnemyState
 {
     private Enemy enemy;
     private float patrolTimer;
-    private float patrolDur = 10f;
+    private float patrolDur;
 
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
+        patrolDur = UnityEngine.Random.Range(1, 10);
     }
 
     public void Execute()
     {
+       
         Patroling();
         enemy.Movement();
 

@@ -22,6 +22,7 @@ public class AttackBehaviour : StateMachineBehaviour
     {
         animator.GetComponent<Character>().Attacking = false;
         animator.GetComponent<Character>().SwordCollider.enabled = false;
+        Player.Instance.SpecialSwordCollider.enabled = false;
         animator.ResetTrigger("Attack");
     }
 

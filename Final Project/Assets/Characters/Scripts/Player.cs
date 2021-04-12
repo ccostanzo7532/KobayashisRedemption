@@ -55,18 +55,28 @@ public class Player : Character
     public GameObject hpItem_pf;
     bool canUseHP;
 
-   
+    public EdgeCollider2D specialSwordCollider;
+
+    public EdgeCollider2D SpecialSwordCollider
+    {
+        get
+        {
+            return specialSwordCollider;
+        }
+    }
+
+
 
     public override bool isDead
     {
         get
         {
-            if(health <= 0)
+            if(player_hp <= 0)
             {
                 WhenDead();
             }
            
-            return health <= 0;
+            return player_hp <= 0;
         }
     }
 
@@ -187,6 +197,11 @@ public class Player : Character
 
     }
 
+    public void SpecialSwordAttack()
+    {
+        SpecialSwordCollider.enabled = true;
+    }
+
     public void WhenDead()
     {
         if(Died != null)
@@ -202,17 +217,8 @@ public class Player : Character
     public void OnCollisionEnter2D(Collision2D collision)
     {
        
-         if(collision.gameObject.tag == "enemy")
-        {
-            TakeDamge(20);
-           
-        }
-        else if (collision.gameObject.tag == "heavy")
-        {
-            TakeDamge(35);
-
-        }
-        else if (collision.gameObject.tag == "fb")
+        
+        if (collision.gameObject.tag == "fb")
         {
             Destroy(collision.gameObject);
             addFireball();
@@ -229,13 +235,7 @@ public class Player : Character
             addHpItem();
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "enemy" || collision.gameObject.tag == "heavy")
-        {
-            MyAnim.SetBool("TakingDamage", false);
-        }
-    }
+   
     
     public void Movement()
     {
@@ -254,13 +254,7 @@ public class Player : Character
         
     }
     
-    public void TakeDamge(int damage)
-    {
-        player_hp -= damage;
-        Health.setHP(player_hp);
-        MyAnim.SetBool("TakingDamage", true);
-        
-    }
+   
     public void UseHealthItem()
     {
         if(player_hp < 100 && canUseHP && Input.GetKeyDown(KeyCode.LeftShift))
@@ -269,6 +263,11 @@ public class Player : Character
             player_hp += 45;
             Health.setHP(player_hp);
             canUseHP = false;
+            if(player_hp > 100)
+            {
+                player_hp = health;
+                Health.setHP(player_hp);
+            }
         }
     }
 
@@ -339,7 +338,23 @@ public class Player : Character
     {
         if (!invincible)
         {
-            health -= 25;
+            if (damageTag.Contains("enemy1_Sword"))
+            {
+                player_hp -= 20;
+                damageTag.Remove("enemy1_Sword");
+            }
+            else if (damageTag.Contains("enemy2_Sword"))
+            {
+                player_hp -= 35;
+                damageTag.Remove("enemy2_Sword");
+            }
+            else if (damageTag.Contains("Kunai"))
+            {
+                player_hp -= 30;
+                damageTag.Remove("Kunai");
+            }
+           
+            Health.setHP(player_hp);
 
             if (!isDead)
             {
@@ -362,7 +377,9 @@ public class Player : Character
     {
         myrb.velocity = Vector2.zero;
         MyAnim.SetTrigger("Idle");
-        health = 100;
+        player_hp = health;
+        Health.maxHP(health);
+        Health.setHP(health);
         transform.position = playerStartPos.position;
     }
 }
