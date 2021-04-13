@@ -77,6 +77,7 @@ public class Player : Character
             }
            
             return player_hp <= 0;
+            
         }
     }
 
@@ -352,6 +353,11 @@ public class Player : Character
             {
                 player_hp -= 30;
                 damageTag.Remove("Kunai");
+            }
+            else if (damageTag.Contains("Spike"))
+            {
+                player_hp -= 15;
+                damageTag.Remove("Spike");
             }
            
             Health.setHP(player_hp);

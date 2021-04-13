@@ -20,6 +20,7 @@ TagManager:
   - enemy2_Sword
   - Kunai
   - Enemy_throw
+  - Spike
   layers:
   - Default
   - TransparentFX

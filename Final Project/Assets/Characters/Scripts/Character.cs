@@ -80,6 +80,11 @@ public abstract class Character : MonoBehaviour
             damageTag.Add("Kunai");
             StartCoroutine(TakeDamage());
         }
+        else if(other.tag == "Spike")
+        {
+            damageTag.Add("Spike");
+            StartCoroutine(TakeDamage());
+        }
     }
     public void FlipCharacter()
     {
