@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5679192591836696496}
   m_Layer: 9
   m_Name: HeavyEnemy
-  m_TagString: heavy
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,9 +117,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: {fileID: 5679192592095151586}
   health: 150
-  damageTag:
-  - 
+  damageTag: []
   swordCollider: {fileID: 5679192592751663036}
+  kunaiSpot: {fileID: 0}
+  kunai_pf: {fileID: 0}
   enemy_hp: 150
   AttackRange: 1
   startPos: {fileID: 0}
@@ -588,7 +589,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5679192592898656471}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.96, y: 1.29, z: 0}
+  m_LocalPosition: {x: -0.9, y: 0.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5679192591836696499}
@@ -695,7 +696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -1.61, y: -0.25861603}
+  m_AnchoredPosition: {x: -1.87, y: -0.25861603}
   m_SizeDelta: {x: 5.318, y: 1.808}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5679192593543884507

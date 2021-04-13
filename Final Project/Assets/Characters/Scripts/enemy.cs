@@ -150,7 +150,17 @@ public class Enemy : Character
 
     public void ThrowKunai()
     {
-        GameObject Kunai = Instantiate(kunai_pf, kunaiSpot.position, kunaiSpot.rotation);
+        if (lookingRight)
+        {
+            GameObject kunai = Instantiate(kunai_pf, kunaiSpot.position, Quaternion.Euler(new Vector3(0, 0, -90)));
+            kunai.GetComponent<Kunai>().Spawn(Vector2.right);
+        }
+        else
+        {
+            GameObject kunai = Instantiate(kunai_pf, kunaiSpot.position, Quaternion.Euler(new Vector3(0, 0, 90)));
+            kunai.GetComponent<Kunai>().Spawn(Vector2.left);
+        }
+        
     }
    public void StopAttacking()
     {
@@ -189,7 +199,7 @@ public class Enemy : Character
         {
             enemy_hp -= 30;
             damageTag.Remove("projectile");
-            Debug.Log("fire");
+           
            
         }
         else if (damageTag.Contains("player_SpecialSword"))

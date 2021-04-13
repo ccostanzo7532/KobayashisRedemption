@@ -6,12 +6,20 @@ public class Kunai : MonoBehaviour
 {
     public Rigidbody2D rb;
     public float speed = 5f;
+    private Vector2 Dir;
     // Start is called before the first frame update
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
-        rb.velocity = transform.right * speed;
-        
+       
+    }
+    private void FixedUpdate()
+    {
+        rb.velocity = Dir * speed;
+    }
+    public void Spawn(Vector2 Dir)
+    {
+        this.Dir = Dir;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

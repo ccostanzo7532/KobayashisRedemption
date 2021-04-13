@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2362644901379958749}
   - component: {fileID: 9071138845762512196}
   - component: {fileID: 5702865106002230959}
+  - component: {fileID: 8263939743894131280}
   - component: {fileID: 2988693987709610230}
   m_Layer: 0
   m_Name: Kunai
@@ -107,6 +108,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 1.6}
   m_EdgeRadius: 0
+--- !u!114 &8263939743894131280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7782646963864221254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9bfa16e69114b2ebbf34caeb19ec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  speed: 5
 --- !u!50 &2988693987709610230
 Rigidbody2D:
   serializedVersion: 4
@@ -122,7 +137,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

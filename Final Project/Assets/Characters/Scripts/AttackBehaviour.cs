@@ -9,6 +9,7 @@ public class AttackBehaviour : StateMachineBehaviour
    {
         animator.GetComponent<Character>().Attacking = true;
         animator.SetFloat("speed", 0);
+       
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

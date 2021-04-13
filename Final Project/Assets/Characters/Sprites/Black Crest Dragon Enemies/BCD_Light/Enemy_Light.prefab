@@ -700,10 +700,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: {fileID: 2298565771355483836}
   health: 100
-  damageTag:
-  - 
+  damageTag: []
   swordCollider: {fileID: 2298565772159995108}
-  enemy_hp: 0
+  kunaiSpot: {fileID: 0}
+  kunai_pf: {fileID: 0}
+  enemy_hp: 100
   AttackRange: 1
   startPos: {fileID: 0}
   endPos: {fileID: 0}

@@ -22,7 +22,7 @@ public class Player : Character
         }
     }
 
-    [SerializeField] private Rigidbody2D myrb;
+    public Rigidbody2D myrb;
   
     public Transform playerStartPos;
     public SpriteRenderer myRend;
@@ -241,7 +241,7 @@ public class Player : Character
     {
         float run = Input.GetAxisRaw("Horizontal");
 
-        myrb.velocity = new Vector2(run ,0)*speed + new Vector2(0,myrb.velocity.y);
+        myrb.velocity = new Vector2(run ,0) * speed + new Vector2(0,myrb.velocity.y);
       
     }
     
