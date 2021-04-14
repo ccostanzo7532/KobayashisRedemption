@@ -7,9 +7,9 @@ public abstract class Character : MonoBehaviour
 
 {
     public Health_UI Health;
-    
-    public Animator MyAnim{ get; private set; }
 
+    public Animator MyAnim { get; private set; }
+    [SerializeField]
     protected float speed;
     [SerializeField]
     protected int health;

@@ -27,7 +27,7 @@ public class Player : Character
     public Transform playerStartPos;
     public SpriteRenderer myRend;
     public float jumpHeight = 10f;
-    new float speed = 3.5f;
+   
     private BoxCollider2D box2D;
     private bool DoubleJump;
     public LayerMask platformLayer;
@@ -37,7 +37,7 @@ public class Player : Character
     public GameObject fireball;
     bool canUseFireball;
 
-    new int health = 100;
+   
     public int player_hp;
     private bool invincible = false;
     [SerializeField]
@@ -133,13 +133,9 @@ public class Player : Character
                 DoubleJump = true;
 
             }
-           else if (Input.GetAxisRaw("Jump") > 0 && DoubleJump && !OnGround())
-            {
 
-                myrb.velocity = Vector2.up * jumpHeight;
-                DoubleJump = false;
+            
 
-            }
         }
         
         
@@ -155,15 +151,15 @@ public class Player : Character
             MyAnim.SetBool("Jumping", OnGround());
 
 
-
-
-            if (Input.GetAxisRaw("Jump") > 0 && DoubleJump && !OnGround())
+            if (Input.GetKeyDown(KeyCode.Space) && DoubleJump && !OnGround())
             {
 
                 myrb.velocity = Vector2.up * jumpHeight;
                 DoubleJump = false;
 
             }
+
+
 
             if (Input.GetMouseButtonDown(0))
             {

@@ -12,7 +12,7 @@ public class Enemy : Character
     public Transform kunaiSpot;
     public GameObject kunai_pf;
     public int enemy_hp;
-    new float speed = 2f;
+    
     [SerializeField] private float AttackRange = 1f;
     public bool InAttackRange
     {
