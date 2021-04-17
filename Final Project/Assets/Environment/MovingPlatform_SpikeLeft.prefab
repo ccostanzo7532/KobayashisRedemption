@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1672277801008183604}
   - component: {fileID: 1672277801008183607}
   m_Layer: 0
-  m_Name: MovingPlatform_SpikeBoth
+  m_Name: MovingPlatform_SpikeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 4547134190541071576}
   - component: {fileID: 3916005635253908394}
   - component: {fileID: 7244733976194840445}
+  - component: {fileID: 1244927154223171805}
   m_Layer: 10
   m_Name: SpikePlat_Both
   m_TagString: Untagged
@@ -210,6 +211,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.7956085, y: 0.266819}
   m_EdgeRadius: 0
+--- !u!114 &1244927154223171805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6871738686160019331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f3b5fc8cbe744ab242ac8595417e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  other: {fileID: 0}
 --- !u!1 &9062628963628848917
 GameObject:
   m_ObjectHideFlags: 0

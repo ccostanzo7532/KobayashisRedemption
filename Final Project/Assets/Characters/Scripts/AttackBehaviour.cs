@@ -9,6 +9,10 @@ public class AttackBehaviour : StateMachineBehaviour
    {
         animator.GetComponent<Character>().Attacking = true;
         animator.SetFloat("speed", 0);
+        if(animator.tag == "Player")
+        {
+            Player.Instance.myrb.velocity = Vector2.zero;
+        }
        
     }
 

@@ -22,9 +22,9 @@ public class Kunai : MonoBehaviour
         this.Dir = Dir;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.gameObject.tag == "ground" || collision.gameObject.tag == "sword" || collision.gameObject.tag == "health" || collision.gameObject.tag == "wall")
+        if (other.gameObject.tag == "ground" || other.gameObject.tag == "sword" || other.gameObject.tag == "health" || other.gameObject.tag == "wall")
         {
             Destroy(gameObject);
         }

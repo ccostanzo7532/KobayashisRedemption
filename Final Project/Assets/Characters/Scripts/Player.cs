@@ -104,36 +104,38 @@ public class Player : Character
 
         if (!Damaged && !isDead)
         {
-            float run = Input.GetAxisRaw("Horizontal");
-            Movement();
-
-            MyAnim.SetFloat("speed", Mathf.Abs(run));
-            MyAnim.SetFloat("vSpeed", myrb.velocity.y);
-            if (run < 0 && !lookingRight)
+            if (!Attacking)
             {
+                float run = Input.GetAxisRaw("Horizontal");
+                Movement();
+
+                MyAnim.SetFloat("speed", Mathf.Abs(run));
+                MyAnim.SetFloat("vSpeed", myrb.velocity.y);
+                if (run < 0 && !lookingRight)
+                {
 
 
-                FlipCharacter();
+                    FlipCharacter();
 
+                }
+                else if (run > 0 && lookingRight)
+                {
+
+                    FlipCharacter();
+
+
+                }
+
+
+
+                if (Input.GetAxisRaw("Jump") > 0 && OnGround())
+
+                {
+                    myrb.velocity = Vector2.up * jumpHeight;
+                    DoubleJump = true;
+
+                }
             }
-            else if (run > 0 && lookingRight)
-            {
-
-                FlipCharacter();
-
-
-            }
-
-
-
-            if (Input.GetAxisRaw("Jump") > 0 && OnGround())
-
-            {
-                myrb.velocity = Vector2.up * jumpHeight;
-                DoubleJump = true;
-
-            }
-
             
 
         }
@@ -161,7 +163,7 @@ public class Player : Character
 
 
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && OnGround())
             {
 
                 swordAttack();
@@ -210,6 +212,10 @@ public class Player : Character
     public override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
+        if(other.tag == "Kunai")
+        {
+            Destroy(other.gameObject);
+        }
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -231,6 +237,7 @@ public class Player : Character
             Destroy(collision.gameObject);
             addHpItem();
         }
+       
     }
    
     
