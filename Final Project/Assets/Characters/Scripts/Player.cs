@@ -88,12 +88,13 @@ public class Player : Character
     // Start is called before the first frame update
     public override void Start()
     {
+       
         myrb = this.GetComponent<Rigidbody2D>();
         box2D = this.GetComponent<BoxCollider2D>();
         base.Start();
         myRend = this.GetComponent<SpriteRenderer>();
         player_hp = health;
-
+        playerStartPos = GameObject.Find("StartPos").transform;
         Health.maxHP(health);
 
     }
@@ -216,6 +217,10 @@ public class Player : Character
         {
             Destroy(other.gameObject);
         }
+        else if(other.tag == "Level_End")
+        {
+            Debug.Log("Loading next Level....");
+        }
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -239,8 +244,16 @@ public class Player : Character
         }
        
     }
-   
-    
+
+    private void OnLevelWasLoaded(int level)
+    {
+        FindPlayerStartPos();
+    }
+
+    void FindPlayerStartPos()
+    {
+        transform.position = GameObject.Find("StartPos").transform.position;
+    }
     public void Movement()
     {
         float run = Input.GetAxisRaw("Horizontal");
