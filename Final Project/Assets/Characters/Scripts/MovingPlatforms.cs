@@ -48,5 +48,6 @@ public class MovingPlatforms : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         collision.transform.SetParent(null);
+        DontDestroyOnLoad(GameObject.Find("Player").gameObject);
     }
 }

@@ -12,7 +12,8 @@ public class Enemy : Character
     public Transform kunaiSpot;
     public GameObject kunai_pf;
     public int enemy_hp;
-    
+    public AudioSource damage_Audio;
+    public AudioSource attack_audio;
     [SerializeField] private float AttackRange = 1f;
     public bool InAttackRange
     {
@@ -36,9 +37,17 @@ public class Enemy : Character
 
     public Transform startPos;
     public Transform endPos;
-    
-   
-    
+
+
+
+    private void Awake()
+    {
+        attack_audio = GameObject.Find("EnemyAttack_sfx").GetComponent<AudioSource>();
+        if(attack_audio == null)
+        {
+            attack_audio = GameObject.Find("EnemyAttack_sfx").GetComponent<AudioSource>();
+        }
+    }
 
     // Start is called before the first frame update
     public override void  Start()
@@ -208,6 +217,8 @@ public class Enemy : Character
             damageTag.Remove("player_SpecialSword");
         }
 
+        damage_Audio = GameObject.Find("EnemyDamage").GetComponent<AudioSource>();
+        damage_Audio.Play();
         
         
         Health.setHP(enemy_hp);

@@ -9,18 +9,27 @@ public class LevelManager : MonoBehaviour
     public string nextLevel_String;
 
     public bool intToLoadNext = false;
+
+    public AudioSource bg_Music;
+    public AudioSource boss_music;
     // Start is called before the first frame update
+
     void Start()
     {
-        
+        bg_Music = GameObject.Find("BGMusic").GetComponent<AudioSource>();
+        bg_Music.Play();
+       
+        DontDestroyOnLoad(bg_Music.gameObject);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
+   
     private void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject levelLoader = collision.gameObject;

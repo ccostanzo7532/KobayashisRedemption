@@ -23,10 +23,12 @@ public class PatrolState : IEnemyState
         if(enemy.Target !=  null && enemy.tag == "enemy" && enemy.InAttackRange)
         {
             enemy.ChangeEnemyState(new AttackState());
+           
         }
         else if(enemy.Target != null && enemy.tag == "Enemy_throw" && enemy.InAttackRange)
         {
             enemy.ChangeEnemyState(new RangedAttackState());
+            
         }
     }
 

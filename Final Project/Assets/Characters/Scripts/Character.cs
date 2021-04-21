@@ -75,11 +75,6 @@ public abstract class Character : MonoBehaviour
             damageTag.Add("enemy2_Sword");
             StartCoroutine(TakeDamage());
         }
-        else if (other.tag == "Kunai")
-        {
-            damageTag.Add("Kunai");
-            StartCoroutine(TakeDamage());
-        }
         else if(other.tag == "Spike")
         {
             damageTag.Add("Spike");

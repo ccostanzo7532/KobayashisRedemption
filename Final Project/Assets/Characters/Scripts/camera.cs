@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
-public class camera : MonoBehaviour
+
+public class Camera : MonoBehaviour
 {
     public Transform player;
-    Vector3 offset;
-    
-    
-    
-    
+    public CinemachineVirtualCamera vcam2D;
+
+    public void Awake()
+    {
+        player = Player.Instance.transform;
+        vcam2D = this.GetComponent<CinemachineVirtualCamera>();
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-        offset = new Vector3(0, 0, -5);
-        this.transform.position = player.position + offset;
 
+        vcam2D.m_Follow = player;
     }
 }

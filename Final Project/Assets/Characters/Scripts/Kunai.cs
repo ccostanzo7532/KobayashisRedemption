@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class Kunai : MonoBehaviour
 {
+    
     public Rigidbody2D rb;
     public float speed = 5f;
     private Vector2 Dir;
-    // Start is called before the first frame update
+    private AudioSource kunai_sfx;
+
+    private void Awake()
+    {
+        kunai_sfx = GameObject.Find("Kunai_sfx").GetComponent<AudioSource>();
+    }
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
+        kunai_sfx.Play();
        
     }
     private void FixedUpdate()

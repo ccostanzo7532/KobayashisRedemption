@@ -22,6 +22,7 @@ TagManager:
   - Enemy_throw
   - Spike
   - Level_End
+  - troll
   layers:
   - Default
   - TransparentFX
@@ -62,9 +63,9 @@ TagManager:
   - name: Border
     uniqueID: 2278769165
     locked: 0
-  - name: Platforms
-    uniqueID: 1278772621
-    locked: 0
   - name: Foregorund
     uniqueID: 222565725
+    locked: 0
+  - name: Platforms
+    uniqueID: 1278772621
     locked: 0

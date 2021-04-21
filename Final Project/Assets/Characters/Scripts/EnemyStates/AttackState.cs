@@ -51,6 +51,7 @@ public class AttackState : IEnemyState
         {
             canAttack = false;
             enemy.MyAnim.SetTrigger("Attack");
+            enemy.attack_audio.Play();
         }
     } 
 }

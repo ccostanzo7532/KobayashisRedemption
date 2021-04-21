@@ -22,7 +22,7 @@ public class EnemyVision : MonoBehaviour
         if(other.tag == "Player")
         {
             enemy.Target = null;
-            
+            Debug.Log("null");
         }
     }
 }

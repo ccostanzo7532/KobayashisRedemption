@@ -6,8 +6,8 @@ public class RangedAttackState : IEnemyState
 {
     private Enemy enemy;
 
-    private float throwTimer;
-    private float throwWait = 3;
+    private float throwTimer=0;
+    private float throwWait = 2;
     private bool canThrow = true;
     public void Enter(Enemy enemy)
     {
@@ -22,10 +22,11 @@ public class RangedAttackState : IEnemyState
         {
             enemy.ChangeEnemyState(new PatrolState());
         }
-        else if(enemy.Target != null)
+        else if (enemy.Target != null)
         {
             enemy.Movement();
         }
+
        
     }
 

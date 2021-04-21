@@ -42,8 +42,14 @@ public class Player : Character
     private bool invincible = false;
     [SerializeField]
     private float invincibleTimer = 3;
-    
-   
+
+    public AudioSource jump_Audio;
+    public AudioSource doubleJump_Audio;
+    public AudioSource Sword1_Audio;
+    public AudioSource item_audio;
+    public AudioSource playerDamage_audio;
+    public AudioSource Sword2_Audio;
+  
 
     public GameObject fb_pf;
     public GameObject inventory;
@@ -83,18 +89,30 @@ public class Player : Character
 
 
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        playerDamage_audio = GameObject.Find("PlayerDamage").GetComponent<AudioSource>();
+        Sword2_Audio = GameObject.Find("SwordAttack2").GetComponent<AudioSource>();
+
+        item_audio = GameObject.Find("ItemSfx").GetComponent<AudioSource>();
+    }
+
 
 
     // Start is called before the first frame update
     public override void Start()
     {
+
        
+      
         myrb = this.GetComponent<Rigidbody2D>();
         box2D = this.GetComponent<BoxCollider2D>();
         base.Start();
         myRend = this.GetComponent<SpriteRenderer>();
         player_hp = health;
-        playerStartPos = GameObject.Find("StartPos").transform;
+        playerStartPos = GameObject.FindGameObjectWithTag("Respawn").transform;
+       
         Health.maxHP(health);
 
     }
@@ -134,6 +152,7 @@ public class Player : Character
                 {
                     myrb.velocity = Vector2.up * jumpHeight;
                     DoubleJump = true;
+                    jump_Audio.Play();
 
                 }
             }
@@ -159,6 +178,7 @@ public class Player : Character
 
                 myrb.velocity = Vector2.up * jumpHeight;
                 DoubleJump = false;
+                jump_Audio.Play();
 
             }
 
@@ -168,7 +188,7 @@ public class Player : Character
             {
 
                 swordAttack();
-
+                Sword1_Audio.Play();
             }
 
 
@@ -176,6 +196,7 @@ public class Player : Character
             {
                 MyAnim.SetTrigger("Fireball");
                 GameObject fire = Instantiate(fireball, fireballSpot.position, fireballSpot.rotation);
+                
 
                 destroyFireball(fb);
                 canUseFireball = false;
@@ -187,6 +208,7 @@ public class Player : Character
             else if (Input.GetMouseButton(1) && canUseSword)
             {
                 heavyAttack();
+                Sword2_Audio.Play();
                 destroySword(sword);
                 canUseSword = false;
             }
@@ -216,10 +238,17 @@ public class Player : Character
         if(other.tag == "Kunai")
         {
             Destroy(other.gameObject);
+            damageTag.Add("Kunai");
+            StartCoroutine(TakeDamage());
         }
         else if(other.tag == "Level_End")
         {
             Debug.Log("Loading next Level....");
+        }
+        else if (other.tag == "troll")
+        {
+            damageTag.Add("troll");
+            StartCoroutine(TakeDamage());
         }
     }
     public void OnCollisionEnter2D(Collision2D collision)
@@ -230,17 +259,20 @@ public class Player : Character
         {
             Destroy(collision.gameObject);
             addFireball();
+            item_audio.Play();
          
         }
         else if(collision.gameObject.tag == "sword")
         {
             Destroy(collision.gameObject);
             addSword();
+            item_audio.Play();
         }
         else if (collision.gameObject.tag == "health")
         {
             Destroy(collision.gameObject);
             addHpItem();
+            item_audio.Play();
         }
        
     }
@@ -248,11 +280,15 @@ public class Player : Character
     private void OnLevelWasLoaded(int level)
     {
         FindPlayerStartPos();
+        if (playerStartPos == null)
+        {
+            playerStartPos = GameObject.Find("StartPos").transform;
+        }
     }
 
     void FindPlayerStartPos()
     {
-        transform.position = GameObject.Find("StartPos").transform.position;
+        transform.position = GameObject.FindWithTag("Respawn").transform.position;
     }
     public void Movement()
     {
@@ -375,7 +411,12 @@ public class Player : Character
                 player_hp -= 15;
                 damageTag.Remove("Spike");
             }
-           
+            else if (damageTag.Contains("troll"))
+            {
+                player_hp -= 100;
+                damageTag.Remove("troll");
+            }
+            playerDamage_audio.Play();
             Health.setHP(player_hp);
 
             if (!isDead)
@@ -389,7 +430,7 @@ public class Player : Character
             else
             {
                 MyAnim.SetTrigger("Die");
-                
+               
             }
         }
        
@@ -397,6 +438,7 @@ public class Player : Character
 
     public override void Die()
     {
+       
         myrb.velocity = Vector2.zero;
         MyAnim.SetTrigger("Idle");
         player_hp = health;
