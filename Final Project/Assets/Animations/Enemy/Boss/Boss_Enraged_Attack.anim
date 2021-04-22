@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boss_Attack
+  m_Name: Boss_Enraged_Attack
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -30,9 +30,9 @@ AnimationClip:
     - time: 0.33333334
       value: {fileID: 21300000, guid: 944827473fb5d234fa72f5e87487c510, type: 3}
     - time: 0.41666666
-      value: {fileID: 21300000, guid: 7e0c9fcd6db907b4180e43ada11ff37c, type: 3}
+      value: {fileID: 21300000, guid: 4557aef35f47b684c98d8e8254adb79b, type: 3}
     - time: 0.5
-      value: {fileID: 21300000, guid: 7e0c9fcd6db907b4180e43ada11ff37c, type: 3}
+      value: {fileID: 21300000, guid: 28ee689133c78dd41923e2e49cb8a6e7, type: 3}
     - time: 0.5833333
       value: {fileID: 21300000, guid: 31922d7fc0766ce488f5830dc8ae9579, type: 3}
     - time: 0.6666667
@@ -63,8 +63,8 @@ AnimationClip:
     - {fileID: 21300000, guid: bc6b2ed8455abe7438a36e15c48f1cb8, type: 3}
     - {fileID: 21300000, guid: 231f05261cb12fa4ba9afebc6fa789bc, type: 3}
     - {fileID: 21300000, guid: 944827473fb5d234fa72f5e87487c510, type: 3}
-    - {fileID: 21300000, guid: 7e0c9fcd6db907b4180e43ada11ff37c, type: 3}
-    - {fileID: 21300000, guid: 7e0c9fcd6db907b4180e43ada11ff37c, type: 3}
+    - {fileID: 21300000, guid: 4557aef35f47b684c98d8e8254adb79b, type: 3}
+    - {fileID: 21300000, guid: 28ee689133c78dd41923e2e49cb8a6e7, type: 3}
     - {fileID: 21300000, guid: 31922d7fc0766ce488f5830dc8ae9579, type: 3}
     - {fileID: 21300000, guid: 6e96b4f6d3a092142b787e7b594512b6, type: 3}
     - {fileID: 21300000, guid: c6052ecf931b7924dbfcaf3a72820963, type: 3}

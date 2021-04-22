@@ -23,6 +23,7 @@ TagManager:
   - Spike
   - Level_End
   - troll
+  - Boss
   layers:
   - Default
   - TransparentFX

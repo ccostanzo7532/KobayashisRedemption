@@ -11,6 +11,7 @@ public class AttackState : IEnemyState
     public void Enter(Enemy enemy)
     {
         this.enemy = enemy;
+        enemy.attack_audio = GameObject.Find("EnemyAttack_sfx").GetComponent<AudioSource>();
     }
 
     public void Execute()

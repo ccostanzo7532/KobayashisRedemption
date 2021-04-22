@@ -250,6 +250,11 @@ public class Player : Character
             damageTag.Add("troll");
             StartCoroutine(TakeDamage());
         }
+        else if (other.tag == "Boss")
+        {
+            damageTag.Add("Boss");
+            StartCoroutine(TakeDamage());
+        }
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -415,6 +420,11 @@ public class Player : Character
             {
                 player_hp -= 100;
                 damageTag.Remove("troll");
+            }
+            else if (damageTag.Contains("Boss"))
+            {
+                player_hp -= 15;
+                damageTag.Remove("Boss");
             }
             playerDamage_audio.Play();
             Health.setHP(player_hp);

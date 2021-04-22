@@ -40,15 +40,6 @@ public class Enemy : Character
 
 
 
-    private void Awake()
-    {
-        attack_audio = GameObject.Find("EnemyAttack_sfx").GetComponent<AudioSource>();
-        if(attack_audio == null)
-        {
-            attack_audio = GameObject.Find("EnemyAttack_sfx").GetComponent<AudioSource>();
-        }
-    }
-
     // Start is called before the first frame update
     public override void  Start()
     {
